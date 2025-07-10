@@ -1,8 +1,8 @@
 let nonceList = [];
-exports.getNonce = (req,res)=>{
+exports.getNonce = async (req,res)=>{
     const userAddress = req.params.userAddress;
     if(!userAddress){
-        return res.send("User Address in Required");
+        return res.send("User Address is Required");
     }
         const nonce = Math.floor(100000 + Math.random() * 900000); // for random nonce (6 digits)
         const index = nonceList.findIndex(entry => entry.address === userAddress);
