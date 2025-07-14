@@ -4,14 +4,24 @@ exports.checkSocialMedia = async (req, res, next) => {
   const { user } = req.body;
   const { X, facebook } = user;
 
-  try {
-    const existingMedia = await users.findOne({
-      'X.username': X.username,
-      'facebook.username': facebook.username
-    });
+  if(!X || !facebook)
+     return res.status(400).json({message:"Params Missing"})
 
-    if (existingMedia) {
-      return res.status(400).json({ message: "Social usernames already exist" });
+  try {
+    const existingX = await users.findOne({
+      'X.username': X.username,
+    });
+    
+    const existingfacebook  = await users.findOne({
+      "facebook.username":facebook.username
+    })
+   
+    if (!existingX) {
+      return res.status(400).json({ message: "X account already linked" });
+    }
+
+    if(!existingfacebook){
+      return res.status(400).json({ message: "facebok already linked " });
     }
 
     next();

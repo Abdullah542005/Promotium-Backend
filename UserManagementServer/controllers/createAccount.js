@@ -1,6 +1,7 @@
 const users = require('../model/dbModel');
 
 exports.createAccount = async (req, res) => {
+
   const { user } = req.body;
 
   try {

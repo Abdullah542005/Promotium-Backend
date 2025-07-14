@@ -5,7 +5,7 @@ exports.checkUserName = async (req, res, next) => {
   const { username } = user;
 
   try {
-    const existingUsername = await users.findOne({ username });
+    const existingUsername = await users.findOne({username:username });
 
     if (existingUsername) {
       return res.status(400).json({ message: "Username already exists" });
