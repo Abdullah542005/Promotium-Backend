@@ -7,14 +7,18 @@ const postSchema = new mongoose.Schema(
   {
     _id: {
       type:String,
-      require:true
+      required:true
     },
     postHead: String,
     postBody: String,
     postHash: String,
     advertiserID: String,
     targetAudience: [String],
-    timestamp: Number,
+    timestamp:{
+      type: Date,
+      required: true
+    },
+    
     rewardPerInteraction: Number,
     maximumInteraction: Number,
     interactionCount: Number,
@@ -24,8 +28,11 @@ const postSchema = new mongoose.Schema(
       enum: ["Ordinary", "Challenge"],
     },
   },
-  { discriminatorKey: postType, _id: false }
+  { discriminatorKey: "postType", _id: false }
 );
+postSchema.index({timestamp:-1})
+postSchema.index({postType: 1})
+postSchema.index({timestamp: 1}, {expireAfterSeconds: 0});
 
 const postModel = mongoose.model("Post", postSchema);
 
@@ -64,4 +71,8 @@ const ChallengeSchema = postModel.discriminator(
 );
 
 
-module.exports = postModel;
+module.exports = {
+  Posts : postModel,
+  OrdinarySchema: OrdinarySchema,
+  ChallengeSchema: ChallengeSchema
+};
