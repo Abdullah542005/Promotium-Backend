@@ -7,7 +7,7 @@ const { nonceList } = require("./getNonce");
 
 exports.login = async (req, res) => {
   const { signature, message } = req.body;
-
+  
   const userNonceObj = nonceList.find(
     (item) => item.address === message.userAddress
   );

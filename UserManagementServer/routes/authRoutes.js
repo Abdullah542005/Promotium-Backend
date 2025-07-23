@@ -5,8 +5,8 @@ const { getNonce } = require("../controllers/getNonce");
 const { login } = require("../controllers/loginController");
 const { createAccount } = require("../controllers/createAccount");
 const { authorization } = require("../middleware/authorization");
-const { checkUserName } = require("../middleware/checkUserName");
-const { checkSocialMedia } = require("../middleware/checkSocialMedia");
+const { checkUserName } = require("../controllers/checkUsername");
+const { checkSocialMedia } = require("../controllers/checkSocialMedia");
 
 router.get("/getNonce/:userAddress", getNonce);
 

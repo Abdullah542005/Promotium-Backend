@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "Promotium" });
+mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "promotium" });
 
 const postSchema = new mongoose.Schema(
   {
     _id: {
-      type:String,
-      require:true
+      type: String,
+      require: true,
     },
     postHead: String,
     postBody: String,
@@ -24,7 +24,7 @@ const postSchema = new mongoose.Schema(
       enum: ["Ordinary", "Challenge"],
     },
   },
-  { discriminatorKey: postType, _id: false }
+  { discriminatorKey:'postType', _id: false }
 );
 
 const postModel = mongoose.model("Post", postSchema);
@@ -37,7 +37,7 @@ const OrdinarySchema = postModel.discriminator(
       of: [{ task: String, link: String }],
     },
     interactions: [
-      { interactionID: String, interactedAt: Number, promoterID: String },
+      { interactedAt: Number, promoterID: String, interactionID: String },
     ],
   })
 );
@@ -56,6 +56,7 @@ const ChallengeSchema = postModel.discriminator(
         interactionHash: String,
         imageProofs: [String],
         isChallenged: Boolean,
+        claimUnlock: Number,
         hasClaimed: Boolean,
         isValid: Boolean,
       },
@@ -63,5 +64,36 @@ const ChallengeSchema = postModel.discriminator(
   })
 );
 
+const userSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    unique: true,
+    require: true,
+  },
+  address: {
+    type: String,
+    unique: true,
+    require: true,
+  },
+  fullName: String,
+  username: {
+    type: String,
+    unique: true,
+    require: true,
+  },
+  bio: String,
+  country: String,
+  pfp: String,
+  X: { username: String, token: String },
+  facebook: { username: String, token: String },
+  followers: [String],
+  follows: [String],
+  posts: [String],
+  interactions: [{ postID: String, interactionID: String }],
+  isValidator: Boolean,
+  notifications: [{ type: String, body: String }],
+});
 
-module.exports = postModel;
+const userModel = mongoose.model("User", userSchema);
+
+module.exports = { postModel, userModel };

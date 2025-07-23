@@ -1,6 +1,6 @@
 const jsonwebtoken  = require('jsonwebtoken')
 require("dotenv").config()
-exports.authoriztion = (req,res,next)=>{
+exports.authorization = (req,res,next)=>{
   const token =  req.body["Authorization"].split(" ")[1];
   if(!token) res.status(400).json("JWT Missing") 
   try{

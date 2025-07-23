@@ -1,0 +1,4 @@
+Pending tweak
+Some of the functions have to verify from the contract for successful storage of metedata
+Changing how hash is generated
+Anomlies between keys in contract an database, Database uses _id as keys, contract use _id also address somewhere as keys
