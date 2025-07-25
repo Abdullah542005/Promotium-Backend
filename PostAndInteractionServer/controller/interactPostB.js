@@ -41,7 +41,7 @@ exports.interactPostB = async (req, res) => {
     //This code makes sure user has approved tranaction of sending metadata to contract first
     //To be Added to Other functiosn too.
     const contractData = await contract.interactions(
-      toNumbertoNumber(postId.split("_")[1]),
+      toNumber(postId.split("_")[1]),
       userAddress
     );
     if (contractData.timestamp == 0)
