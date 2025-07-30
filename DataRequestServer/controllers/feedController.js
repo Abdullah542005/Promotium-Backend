@@ -18,7 +18,7 @@ exports.getFeed = async (req, res) => {
 
       return res.status(200).json(posts);
     }
-    //authenticated user feed star from here
+    //authenticated user feed start from here
     if (req.user) {
       const currentUser = await Users.findOne({ userAddress: req.user.userAddress }).lean();
       if (!currentUser) {
