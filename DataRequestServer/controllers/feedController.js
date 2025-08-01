@@ -1,4 +1,4 @@
-const { Posts, Users } = require("../models/dbModels");
+const { postModel, userModel } = require("../models/dbModels");
 
 exports.getFeed = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ exports.getFeed = async (req, res) => {
     const lastSeenDate = lastSeen ? new Date(lastSeen) : new Date(0);
 
     if (tags) {
-      const posts = await Posts.find({
+      const posts = await postModel.find({
         tags: { $in: tags.split(",") },
         timestamp: { $gt: lastSeenDate },
       })
@@ -20,14 +20,14 @@ exports.getFeed = async (req, res) => {
     }
     //authenticated user feed start from here
     if (req.user) {
-      const currentUser = await Users.findOne({ userAddress: req.user.userAddress }).lean();
+      const currentUser = await userModel.findOne({ userAddress: req.user.userAddress }).lean();
       if (!currentUser) {
         return res.status(404).json({ error: "User not found" });
       }
 
       const following = currentUser.following || [];
 
-      const posts = await Posts.find({
+      const posts = await postModel.find({
         userAddress: { $in: following },
         timestamp: { $gt: lastSeenDate },
       })
@@ -38,7 +38,7 @@ exports.getFeed = async (req, res) => {
       return res.status(200).json(posts);
     }
 
-    const posts = await Posts.find({
+    const posts = await postModel.find({
       timestamp: { $gt: twoDaysAgo },
     })
       .sort({ timestamp: -1 })

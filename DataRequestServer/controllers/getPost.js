@@ -1,10 +1,10 @@
-const { Posts } = require("../models/dbModels");
+const { postModel } = require("../models/dbModels");
 
 exports.getPost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const post = await Posts.findById(id).lean();
+    const post = await postModel.findById(id).lean();
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }

@@ -1,15 +1,49 @@
-const { Users } = require("../models/dbModels");
+const {userModel, postModel} = require("../models/dbModels");
 
 exports.getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const user = await Users.findById(id).lean();
+    const {userName} = req.params;
+    const user  = await userModel.findOne({username:userName}).lean()
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    // Contains User Profle, His recent posts and interactions
+    const userPosts = await postModel.find({advertiserID:user._id}).limit(15).lean();
+    const postIDs = user.interactions.map((interaction)=>interaction.postID);
+    const posts = await postModel.find({_id:{$in:postIDs}}).lean();
 
-    return res.status(200).json(user);
+    const postMap = {};
+     for (const post of posts) {
+       postMap[post._id] = post;
+    }
+  
+   const userInteractions = [];
+
+   for (const interaction of user.interactions) {
+        const post = postMap[interaction.postID];
+         if (!post || !post.interactions) continue;
+        const match = post.interactions.find(
+          (i) => i.interactionID === interaction.interactionID
+        );
+        if (match) userInteractions.push(match);
+    }
+
+    const userObject = {
+      profile:{
+         userName:user.username,
+         userAddress:user.address,
+         pfp:user.pfp,
+         bio:user.bio,
+         socialLinks:{
+           X: user.X.username,
+           facebook:user.facebook.username
+         },
+         isValidator:user.isValidator
+       },
+       posts:[...userPosts],
+       interactions:[...userInteractions]
+      }
+    return res.status(200).json(userObject);
   } catch (err) {
     console.error("Get User error:", err);
     return res.status(500).json({ error: "Server error" });
