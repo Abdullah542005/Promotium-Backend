@@ -14,6 +14,7 @@ mongoose.connect(process.env.DB_CONNECTIONSTRING, {
 app.use(express.json());
 
 const feedRoutes = require("./routes/feedRoutes");
+
 app.use("/api", feedRoutes);  
 
 app.listen(PORT, () => {

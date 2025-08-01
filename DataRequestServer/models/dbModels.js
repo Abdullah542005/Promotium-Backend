@@ -3,76 +3,43 @@ require("dotenv").config();
 
 mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "Promotium" });
 
-const postSchema = new mongoose.Schema(
-  {
-    _id: {
-      type:String,
-      required:true
-    },
-    postHead: String,
-    postBody: String,
-    postHash: String,
-    advertiserID: String,
-    targetAudience: [String],
-    timestamp:{
-      type: Date,
-      required: true
-    },
-    
-    rewardPerInteraction: Number,
-    maximumInteraction: Number,
-    interactionCount: Number,
-    postType: {
-      type: String,
-      required: true,
-      enum: ["Ordinary", "Challenge"],
-    },
-  },
-  { discriminatorKey: "postType", _id: false }
-);
-postSchema.index({timestamp:-1})
-postSchema.index({postType: 1})
-postSchema.index({timestamp: 1}, {expireAfterSeconds: 0});
+const ordinarySchema = new mongoose.Schema({
+  postId: { type: String, required: true },
+  postType: { type: String, default: "ordinary" },
+  postHead: String,
+  postBody: String,
+  postHash: String,
+  targetAudience: [String],
+  timestamp: { type: Date, default: Date.now },
+  userAddress: { type: String, required: true },
+  tags: [String],
+});
 
-const postModel = mongoose.model("Post", postSchema);
+const challengeSchema = new mongoose.Schema({
+  postId: { type: String, required: true },
+  postType: { type: String, default: "challenge" },
+  postHead: String,
+  postBody: String,
+  postHash: String,
+  targetAudience: [String],
+  timestamp: { type: Date, default: Date.now },
+  userAddress: { type: String, required: true },
+  challengeType: String,
+  deadline: Date,
+  tags: [String],
+});
 
-const OrdinarySchema = postModel.discriminator(
-  "Ordinary",
-  new mongoose.Schema({
-    socialTask: {
-      type: Map,
-      of: [{ task: String, link: String }],
-    },
-    interactions: [
-      { interactionID: String, interactedAt: Number, promoterID: String },
-    ],
-  })
-);
+const userSchema = new mongoose.Schema({
+  userAddress: { type: String, required: true, unique: true },
+  following: [String],
+});
 
-const ChallengeSchema = postModel.discriminator(
-  "Challenge",
-  new mongoose.Schema({
-    stakeRequired: Number,
-    challengeWindow: Number,
-    interactions: [
-      {
-        interactionID: String,
-        interactedAt: Number,
-        promoterID: String,
-        interactionBody: String,
-        interactionHash: String,
-        imageProofs: [String],
-        isChallenged: Boolean,
-        hasClaimed: Boolean,
-        isValid: Boolean,
-      },
-    ],
-  })
-);
-
+const Posts = mongoose.model("Post", ordinarySchema); 
+const Users = mongoose.model("User", userSchema);
 
 module.exports = {
-  Posts : postModel,
-  OrdinarySchema: OrdinarySchema,
-  ChallengeSchema: ChallengeSchema
+  Posts,
+  OrdinarySchema: ordinarySchema,
+  ChallengeSchema: challengeSchema,
+  Users,
 };
