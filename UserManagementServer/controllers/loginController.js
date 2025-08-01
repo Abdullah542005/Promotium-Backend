@@ -6,33 +6,34 @@ const ethers = require("ethers");
 const { nonceList } = require("./getNonce");
 
 exports.login = async (req, res) => {
-  const { signature, message } = req.body;
+  try{
+  const { signature, userAddress } = req.body;
   
   const userNonceObj = nonceList.find(
-    (item) => item.address === message.userAddress
+    (item) => item.address === userAddress
   );
-
   if (!userNonceObj)
     return res
       .status(400)
       .json({ message: "Nonce not found for this address" });
 
   const signedMessage  = `Connecting to Promotium, Nonce:${userNonceObj.nonce}, Address:${userNonceObj.address}`
+
   if (                 //Singature Verification
     ethers
       .verifyMessage(signedMessage, signature)
-      .toLocaleLowerCase() != message.userAddress.toLocaleLowerCase()
+      .toLocaleLowerCase() != userAddress.toLocaleLowerCase()
   )
     
     return res.status(400).json({ message: "Invalid Signature" });
 
   //Checking Whether User exits
   const user = await UserModel.findOne({
-    userAddress: message.userAddress,
-  });
+    userAddress: userAddress,
+  }).exec();
 
   const payload = {
-    userAddress: message.userAddress,
+    userAddress:userAddress,
     timestamp: Math.floor(Date.now() / 1000),
   };
 
@@ -43,6 +44,9 @@ exports.login = async (req, res) => {
   //If User doesnot exits, Send a Message to create account.
   return res.json({
     token: token,
-    ...(!user && { message: "User Account Not Created" }),
-  });
+    message : user?"Success":"CreateAccount"
+  }); }
+  catch(error){
+    console.log("Error at Login: " + error.message)
+  }
 };
