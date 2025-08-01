@@ -12,7 +12,7 @@ router.get("/getNonce/:userAddress", getNonce);
 
 router.post("/login", login);
 
-router.post("/checkUserName", checkUserName);
+router.get("/checkUserName/:userName", checkUserName);
 
 router.post("/checkSocialMedia", checkSocialMedia);
 
