@@ -134,7 +134,18 @@ exports.createReport = async (req, res) => {
        await  transporter.sendMail(mail(validator.email,reportId,promoterId,promoterUser.address,postId))
     })
         
-    //Dapp Notifications to be added......
+    //Dapp Notifications Added
+    await userModel.updateOne(
+      { address: userAddress },
+      {
+        $push: {
+          notifications: {
+            type: "Report Created",
+            message: `Your report against ${promoterUser.username} has been created successfully.`,
+          },
+        },
+      }
+    );
 
   } catch (error) {
     console.log("Error at Create Report, Message :" + error.message);

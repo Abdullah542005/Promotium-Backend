@@ -1,15 +1,17 @@
 const axios = require("axios");
+const { refreshTwitterToken } = require("./twitterAuthService"); // for refresh tokens
 
-async function checkXInteraction({ token, userId }, tweetId, creatorId) {
-  if (!token || !userId || !tweetId || !creatorId) {
+async function checkXInteraction({ token, refreshToken, userId }, tweetId, creatorId) {
+  if (!token || !refreshToken || !userId || !tweetId || !creatorId) {
     console.error("Invalid input parameters");
     return { success: false, error: "Missing or invalid input parameters" };
   }
 
-  const headers = { Authorization: `Bearer ${token}` };
   const apiBase = process.env.X_API_BASE || "https://api.twitter.com/2";
 
-  try {
+  async function fetchInteractions(accessToken) {
+    const headers = { Authorization: `Bearer ${accessToken}` };
+
     const [likeRes, retweetRes, tweetsRes, followRes] = await Promise.all([
       axios.get(`${apiBase}/tweets/${tweetId}/liking_users?user.fields=id`, { headers }),
       axios.get(`${apiBase}/users/${userId}/retweeted_tweets`, { headers }),
@@ -32,7 +34,28 @@ async function checkXInteraction({ token, userId }, tweetId, creatorId) {
     if (!followed) return { success: false, error: "User does not follow the creator" };
 
     return { success: true };
+  }
+
+  try {
+    return await fetchInteractions(token);
   } catch (err) {
+    // If token expired, refresh and retry
+    if (err.response?.status === 401) {
+      console.log("Access token expired. Refreshing...");
+      try {
+        const newTokens = await refreshTwitterToken(refreshToken);
+        if (newTokens?.access_token) {
+          // Update DB with new tokens (do this in the caller, not here)
+          return await fetchInteractions(newTokens.access_token);
+        } else {
+          return { success: false, error: "Failed to refresh token" };
+        }
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError.message);
+        return { success: false, error: "Token refresh failed" };
+      }
+    }
+
     console.error("X check error:", err.response?.data || err.message);
     return { success: false, error: err.response?.data?.error || err.message };
   }

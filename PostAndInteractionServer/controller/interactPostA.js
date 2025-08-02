@@ -32,11 +32,8 @@ exports.interactPostA = async (req, res) => {
 
     // Check social media interactions
     const [xResult, fbResult] = await Promise.all([
-      checkXInteraction(
-        { token: user.X.token, userId: user.X.username },
-        post.socialTask.get("X")?.[0]?.link.split("/").pop(),
-        post.advertiserID
-      ),
+      checkXInteraction({ token: user.X.token, userId: user.X.userId }, tweetId, advertiser.X.userId),
+
       checkFacebookInteraction(
         { token: user.facebook.token, userId: user.facebook.username },
         post.socialTask.get("facebook")?.[0]?.link.split("/").pop(),
@@ -84,6 +81,12 @@ exports.interactPostA = async (req, res) => {
       {
         $push: {
           interactions: { postID: post._id, interactionID: interactionId },
+          notifications: {
+            type: "interaction",
+            postID: post._id,
+            interactionID: interactionId,
+            message: `You have successfully interacted with the post ${post.title}.`,
+          },
         },
       }
     );

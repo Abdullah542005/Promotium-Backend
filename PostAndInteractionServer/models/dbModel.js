@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema({
   bio: String,
   country: String,
   pfp: String,
-  X: { username: String, token: String },
+  X: { username: String, token: String, refreshToken: String, userID: String },// changes: refresh token and numeric id
   facebook: { username: String, token: String },
   followers: [String],
   follows: [String],
