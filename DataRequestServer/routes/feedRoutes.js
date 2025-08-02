@@ -4,12 +4,16 @@ const feedController = require('../controllers/feedController');
 const getPostController = require('../controllers/getPost');
 const getUserController = require('../controllers/getUser');
 const {search} =  require("../controllers/search")
+const {generalFeed} =  require("../controllers/gFeed")
+const {getContract}  = require("../controllers/getContracts");
 
-router.get("/feed", feedController.getFeed);
+router.get("/feed", generalFeed);
 
 router.get("/post/:id", getPostController.getPost);
 
 router.get("/user/:id", getUserController.getUser);
+
+router.get("/contracts",getContract)
 
 router.post('/search', search)
 
