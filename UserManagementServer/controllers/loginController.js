@@ -28,9 +28,10 @@ exports.login = async (req, res) => {
     return res.status(400).json({ message: "Invalid Signature" });
 
   //Checking Whether User exits
+
   const user = await UserModel.findOne({
-    userAddress: userAddress,
-  }).exec();
+    address: userAddress.toLowerCase(),
+  }).lean()
 
   const payload = {
     userAddress:userAddress,
@@ -44,7 +45,14 @@ exports.login = async (req, res) => {
   //If User doesnot exits, Send a Message to create account.
   return res.json({
     token: token,
-    message : user?"Success":"CreateAccount"
+    message : user?"Success":"CreateAccount",
+    ...(user && {
+      pfp:user.pfp,
+      username:user.username,
+      isEmailLinked:user.isEmailLinked,
+      isValidator:user.isValidator,
+      fullname:user.fullName
+    })
   }); }
   catch(error){
     console.log("Error at Login: " + error.message)

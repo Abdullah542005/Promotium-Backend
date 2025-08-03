@@ -2,8 +2,8 @@ const {userModel, postModel} = require("../models/dbModels");
 
 exports.getUser = async (req, res) => {
   try {
-    const {userName} = req.params;
-    const user  = await userModel.findOne({username:userName}).lean()
+    const userName = req.params.id;
+    const user  = await userModel.findOne({username:userName})
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

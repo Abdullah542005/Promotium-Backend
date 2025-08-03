@@ -1,4 +1,5 @@
-const {userModel} = require('../models/dbModel');
+
+const userModel = require("../model/dbModel")
 
 exports.clearNotifications = async (req, res) => {
   const { username } = req.params;

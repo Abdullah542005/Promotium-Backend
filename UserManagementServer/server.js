@@ -15,9 +15,9 @@ app.use  (express.json());
 app.use("/api/auth", authRoutes);
 
 mongoose
-  .connect(process.env.DB_CONNECTIONSTRING, { dbName: "Promotium" })
+  .connect(process.env.DB_CONNECTIONSTRING, { dbName: "promotium" })
   .then(() => {
-    console.log("MongoDB connected");
+
     app.listen(process.env.PORT || 3000, () => {
       console.log(`Server running on port ${process.env.PORT || 3000}`);
     });

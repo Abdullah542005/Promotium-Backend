@@ -6,7 +6,7 @@ const otpList  = [];
 exports.getEmailOtp = async (req,res)=>{
     try{
     const {email, userAddress}  = req.body;
-    if(!otpList.find((otpObject)=>otpObject.userAddress == userAddress)){
+    if(otpList.find((otpObject)=>otpObject.userAddress == userAddress)){
         return res.status(400).json({message:"OTP already sent"})
     }
     let otp  = otpGenerator.generate(6,{specialChars:false,upperCaseAlphabets:false})
@@ -18,7 +18,7 @@ exports.getEmailOtp = async (req,res)=>{
         html:`<p>Your Email linking code is: <strong>${otp}</strong>, Expires in 10 mins`
     }
     transporter.sendMail(mailOptions);
-    res.json({message:"OTP Sent Succesfully"});
+    res.json({message:"Success"});
     return;
    } catch(error){
      res.status(401).json({message:"Server Encountered An Error"})

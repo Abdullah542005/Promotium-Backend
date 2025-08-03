@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "Promotium" });
-
+mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "promotium" });
 const validatorSchema  = new mongoose.Schema({
       profileID:{
         type:String,

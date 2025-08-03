@@ -13,7 +13,7 @@ exports.createAccount = async (req, res) => {
 
     const newUser = new users({
       _id: nanoid(6),
-      address: user.address,
+      address: user.address.toLowerCase(),
       fullName: user.fullName,
       username: user.username,
       pfp: user.pfp,

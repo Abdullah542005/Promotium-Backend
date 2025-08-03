@@ -29,7 +29,10 @@ const userSchema  = new mongoose.Schema({
      follows:[String],
      posts:[String],
      interactions:[{postID:String, interactionID:String}],
-     isValidator:Boolean
+     isValidator:Boolean,
+     email:String,
+     notifications: [{ type: String, body: String }],
+     isEmailLinked:Boolean,
 })
 
 module.exports = mongoose.model('User', userSchema);
