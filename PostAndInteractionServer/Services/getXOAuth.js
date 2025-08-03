@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { refreshTwitterToken } = require("./twitterAuthService"); // for refresh tokens
+const { refreshTwitterToken } = require("./refreshTwitterToken"); // for refresh tokens
 
 async function checkXInteraction({ token, refreshToken, userId }, tweetId, creatorId) {
   if (!token || !refreshToken || !userId || !tweetId || !creatorId) {

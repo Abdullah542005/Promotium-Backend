@@ -1,11 +1,12 @@
 const { userModel, postModel } = require("../models/dbModel");
-const { checkXInteraction } = require("./xService");
-const { checkFacebookInteraction } = require("./facebookService");
+const { checkXInteractionn } = require("../Services/getXOAuth");
+const { checkFacebookInteraction } = require("../Services/getFacebookOAuth");
 const contract = require("../models/contractPostA");
 const { toNumber } = require("ethers");
 
 exports.interactPostA = async (req, res) => {
   try {
+
     const { postId, userAddress } = req.body;
 
     if (!postId || !userAddress) {
