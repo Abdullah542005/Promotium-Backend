@@ -21,9 +21,10 @@ exports.createPostA = async (req, res) => {
     if (!userAddress || !post) {
       return res.status(400).json({ message: "Missing userAddress or post data" });
     }
+    console.log(userAddress)
 
     // Find user
-    const userProfile = await userModel.findOne({ address: userAddress }).exec();
+    const userProfile = await userModel.findOne({ address: userAddress })
 
     if (!userProfile)
       return res.status(400).json({ message: "User Doesnot Exits" });
@@ -32,7 +33,7 @@ exports.createPostA = async (req, res) => {
       same as that of the frontend*/
     const posthash = ethers.sha256(
       ethers.toUtf8Bytes(
-        userAddress +
+          userAddress +
           post.postBody +
           post.postHead +
           post.timestamp +
@@ -41,7 +42,7 @@ exports.createPostA = async (req, res) => {
       )
     );
 
-    // ✅ Create post in DB using Mongoose create()
+    //  Create post in DB using Mongoose create()
     const newPost = await postModel.create({
       _id: "PSA_" + post.postId, //Prefixed with PSA (A, for Ordinary) to be easily recognized, Blockchain store post id as number only
       postBody: post.postBody,

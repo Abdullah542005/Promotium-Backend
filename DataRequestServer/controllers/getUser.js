@@ -32,6 +32,7 @@ exports.getUser = async (req, res) => {
       profile:{
          userName:user.username,
          userAddress:user.address,
+         fullName:user.fullName,
          pfp:user.pfp,
          bio:user.bio,
          socialLinks:{

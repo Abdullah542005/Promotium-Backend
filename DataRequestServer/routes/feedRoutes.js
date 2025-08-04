@@ -7,7 +7,7 @@ const {search} =  require("../controllers/search")
 const {generalFeed} =  require("../controllers/gFeed")
 const {getContract}  = require("../controllers/getContracts");
 
-router.get("/feed", generalFeed);
+router.get("/feed/:timestamp", generalFeed);
 
 router.get("/post/:id", getPostController.getPost);
 

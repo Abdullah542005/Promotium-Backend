@@ -9,6 +9,6 @@ exports.generalFeed = async (req,res) =>{
       sort({timestamp:-1}).limit(10).lean();
       return res.json(posts)
    }catch(error){
-     console.log("Error at generalized Feed ");
+     console.log("Error at generalized Feed:  "+ error.message);
    }
 }
