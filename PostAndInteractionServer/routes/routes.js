@@ -8,6 +8,7 @@ const {deletePostA }= require("../controller/deletePostA");
 const {deletePostB} = require("../controller/deletePostB");
 const {claimRewardsPostB} = require("../controller/claimRewardPostB");
 const {XAuthInterface} = require("../controller/XAuthInterface");
+const {faucet} = require("../controller/faucet")
 const router = express.Router();
 
 
@@ -20,5 +21,6 @@ router.post("/interactpostb", authorization, interactPostB);
 router.post("/deleteposta", authorization, deletePostA);
 router.post("/deletepostb", authorization, deletePostB);
 router.post("/claimreward", authorization, claimRewardsPostB);
+router.get('/faucet/:userAddress',faucet)
 router.get("/xauth", XAuthInterface); // XAuth interface for Twitter OAuth
 module.exports = router;

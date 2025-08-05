@@ -1,5 +1,5 @@
 const { userModel, postModel } = require("../models/dbModel");
-const { checkXInteractionn } = require("../Services/getXOAuth");
+const { checkXInteraction } = require("../Services/getXOAuth");
 const { checkFacebookInteraction } = require("../Services/getFacebookOAuth");
 const contract = require("../models/contractPostA");
 const { toNumber } = require("ethers");
@@ -54,8 +54,9 @@ exports.interactPostA = async (req, res) => {
     if (isNaN(postNumber)) {
       return res.status(400).json({ message: "Invalid postId format" });
     }
+    
+    const tx = await contract.interact(BigInt(postNumber), userAddress);
 
-    const tx = await contract.interactPost(postNumber, userAddress);
     const receipt = await tx.wait(); // Wait for transaction confirmation
     if (receipt.status !== 1) {
       return res.status(400).json({ message: "Smart contract execution failed" });
