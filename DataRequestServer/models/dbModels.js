@@ -54,35 +54,43 @@ const reportSchema  = new mongoose.Schema({
      hasFinalized:Boolean,
 })
 
-const userSchema  = new mongoose.Schema({
-    _id:{
-         type:String,
-         unique:true,
-         require:true
+const userSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        unique: true,
+        require: true
     },
-     address:{
-         type:String,
-         unique:true,
-         require:true
-     },
-     fullName:String,
-     username:{
-         type:String,
-         unique:true,
-         require:true
-     },
-     email:String,
-     bio:String,
-     country:String,
-     pfp :String,
-     X:{username:String, token:String},
-     facebook:{username:String, token:String},
-     followers:[String],
-     follows:[String],
-     posts:[String],
-     interactions:[{postID:String, interactionID:String}],
-     isValidator:Boolean
-})
+    address: {
+        type: String,
+        unique: true,
+        require: true
+    },
+    fullName: String,
+    username: {
+        type: String,
+        unique: true,
+        require: true
+    },
+    email: String,
+    bio: String,
+    country: String,
+    pfp: String,
+    X: { username: String, token: String },
+    facebook: { username: String, token: String },
+    followers: [String],
+    follows: [String],
+    posts: [String],
+    interactions: [{ postID: String, interactionID: String }],
+    isValidator: Boolean,
+
+    // notifications
+    notifications: [
+        {
+            type: { type: String }, 
+            message: String         
+        }
+    ]
+});
 
 
 const postSchema = new mongoose.Schema(

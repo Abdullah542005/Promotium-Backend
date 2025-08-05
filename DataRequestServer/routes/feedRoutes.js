@@ -6,6 +6,8 @@ const getUserController = require('../controllers/getUser');
 const {search} =  require("../controllers/search")
 const {generalFeed} =  require("../controllers/gFeed")
 const {getContract}  = require("../controllers/getContracts");
+const {getValidator} = require("../controllers/getValidator");
+const {getUserNotifications} = require("../controllers/getUserNotifications");
 
 router.get("/feed/:timestamp", generalFeed);
 
@@ -16,5 +18,9 @@ router.get("/user/:id", getUserController.getUser);
 router.get("/contracts",getContract)
 
 router.post('/search', search)
+
+router.get('/validator', getValidator);
+
+router.get('/notifications', getUserNotifications);
 
 module.exports = router;
