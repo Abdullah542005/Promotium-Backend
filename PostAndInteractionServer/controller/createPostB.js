@@ -34,7 +34,7 @@ exports.createPostB = async (req, res) => {
       same as that of the frontend*/
     const posthash = ethers.sha256(
       ethers.toUtf8Bytes(
-        userAddress +
+          userAddress +
           post.postBody +
           post.postHead +
           post.timestamp +
@@ -45,7 +45,6 @@ exports.createPostB = async (req, res) => {
       )
     );
 
-    // ✅ Create post in DB using Mongoose create()
     const newPost = await postModel.create({
       _id: "PSB_" + post.postId, //Prefixed with PSB (B, for challenge) to be easily recognized, Blockchain store post id as uint number only
       postBody: post.postBody,

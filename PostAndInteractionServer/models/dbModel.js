@@ -91,7 +91,13 @@ const userSchema = new mongoose.Schema({
   posts: [String],
   interactions: [{ postID: String, interactionID: String }],
   isValidator: Boolean,
-  notifications: [{ type: String, message: String }],
+ notifications: [
+  {
+    type: { type: String },
+    message: { type: String },
+  }
+],
+
 });
 
 const userModel = mongoose.model("User", userSchema);

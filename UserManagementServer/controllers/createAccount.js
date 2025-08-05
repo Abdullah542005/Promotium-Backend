@@ -6,7 +6,7 @@ exports.createAccount = async (req, res) => {
 
   try {
     const existingUser = await users.findOne({ address: user.address });
-
+    console.log(user)
     if (existingUser) {
       return res.status(400).json({ message: "User with same credentials exists" });
     }
@@ -18,7 +18,11 @@ exports.createAccount = async (req, res) => {
       username: user.username,
       pfp: user.pfp,
       X: { username: user.X.username, token: user.X.token },
-      facebook: { username: user.facebook.username, token: user.facebook.token },
+      facebook: {
+           username: user.facebook?.username || "",
+               token: user.facebook?.token || "",
+      },
+
       notifications: [
         {
           type: "Account Created",
@@ -26,14 +30,13 @@ exports.createAccount = async (req, res) => {
         },
       ],
     });
-
-    await newUser.save();
-
-    return res.status(201).json({ message: "User created", user: newUser });
+  
+   await newUser.save();
+    return res.status(201).json({ message: "User created"});
   } catch (err) {
+    console.log(err.message)
     return res.status(500).json({
       message: "Server issue, please contact developers",
-      error: err.message,
     });
   }
 };
