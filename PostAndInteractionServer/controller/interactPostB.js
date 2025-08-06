@@ -23,7 +23,7 @@ exports.interactPostB = async (req, res) => {
       return res.status(400).json({ message: "User Account Not Created" });
     if (!post) return res.status(400).json({ message: "Invalid Post ID" });
 
-    if (post.type != "Challenge")
+    if (post.postType != "Challenge")
       return res.status(400).json({ message: "Use Ordinary Post Route" });
 
     if (post.maximumInteraction <= post.interactionCount)
@@ -41,7 +41,7 @@ exports.interactPostB = async (req, res) => {
     //This code makes sure user has approved tranaction of sending metadata to contract first
     //To be Added to Other functiosn too.
     const contractData = await contract.interactions(
-      toNumber(postId.split("_")[1]),
+      ethers.toNumber(postId.split("_")[1]),
       userAddress
     );
     if (contractData.timestamp == 0)
@@ -58,7 +58,7 @@ exports.interactPostB = async (req, res) => {
     );
 
     let interactionId = post.interactionCount++;
-    post.interaction.push({
+    post.interactions.push({
       interactionID: interactionId,
       interactedAt: interactionObject.timestamp,
       promoterID: user._id,
@@ -76,6 +76,7 @@ exports.interactPostB = async (req, res) => {
       interactionID: interactionId,
     });
     await user.save();
+    return res.json({message:"Success"})
   } catch (error) {
     console.log("Error Occured At Interact Post B");
     console.log("Error Message: " + error.message);

@@ -14,7 +14,7 @@ exports.deletePostB = async (req, res) => {
     if(post.advertiserID != userAddress)
         return res.status(400).json({message:"Not Authorized to interact with this post"});
 
-    if (post.type != "Challenge")
+    if (post.postType != "Challenge")
       return res.status(400).json({ message: "Use Ordinary Post Route" });
 
     await postModel.deleteOne({_id:postId}).exec();

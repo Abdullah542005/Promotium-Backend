@@ -19,7 +19,7 @@ router.get("/contracts",getContract)
 
 router.post('/search', search)
 
-router.get('/validator', getValidator);
+router.post('/validator', getValidator);
 
 router.get('/notifications', getUserNotifications);
 

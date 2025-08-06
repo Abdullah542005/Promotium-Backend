@@ -32,22 +32,22 @@ exports.interactPostA = async (req, res) => {
     }
 
     // Check social media interactions
-    const [xResult, fbResult] = await Promise.all([
-      checkXInteraction({ token: user.X.token, userId: user.X.userId }, tweetId, advertiser.X.userId),
+    // const [xResult, fbResult] = await Promise.all([
+    //   checkXInteraction({ token: user.X.token, userId: user.X.userId }, tweetId, advertiser.X.userId),
 
-      checkFacebookInteraction(
-        { token: user.facebook.token, userId: user.facebook.username },
-        post.socialTask.get("facebook")?.[0]?.link.split("/").pop(),
-        post.advertiserID
-      ),
-    ]);
+    //   checkFacebookInteraction(
+    //     { token: user.facebook.token, userId: user.facebook.username },
+    //     post.socialTask.get("facebook")?.[0]?.link.split("/").pop(),
+    //     post.advertiserID
+    //   ),
+    // ]);
 
-    if (!xResult.success) {
-      return res.status(400).json({ message: `X interaction check failed: ${xResult.error}` });
-    }
-    if (!fbResult.success) {
-      return res.status(400).json({ message: `Facebook interaction check failed: ${fbResult.error}` });
-    }
+    // if (!xResult.success) {
+    //   return res.status(400).json({ message: `X interaction check failed: ${xResult.error}` });
+    // }
+    // if (!fbResult.success) {
+    //   return res.status(400).json({ message: `Facebook interaction check failed: ${fbResult.error}` });
+    // }
 
     // Execute smart contract
     const postNumber = toNumber(postId.split("_")[1]);

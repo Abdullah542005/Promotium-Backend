@@ -39,7 +39,7 @@ exports.createPostB = async (req, res) => {
           post.postHead +
           post.timestamp +
           post.rewardPerInteraction +
-          post.maximumInteraction +
+          post.maxInteraction +
           post.stakeRequired +
           post.challengePeriod
       )
@@ -55,10 +55,11 @@ exports.createPostB = async (req, res) => {
       postType: "Challenge",
       interactionCount: 0,
       rewardPerInteraction: post.rewardPerInteraction,
-      maximumInteraction: post.maximumInteraction,
+      maximumInteraction: post.maxInteraction,
       postHash: posthash,
       stakeRequired: post.stakeRequired,
-      challengePeriod: post.challengePeriod,
+      challengeWindow: post.challengePeriod,
+
     });
 
     // added notification for User

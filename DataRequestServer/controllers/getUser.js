@@ -25,7 +25,7 @@ exports.getUser = async (req, res) => {
         const match = post.interactions.find(
           (i) => i.interactionID === interaction.interactionID
         );
-        if (match) userInteractions.push(match);
+        if (match) userInteractions.push({...match,postType:post.postType,postID:post._id});
     }
 
     const userObject = {

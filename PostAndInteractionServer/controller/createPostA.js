@@ -38,7 +38,7 @@ exports.createPostA = async (req, res) => {
           post.postHead +
           post.timestamp +
           post.rewardPerInteraction +
-          post.maximumInteraction
+          post.maxInteraction
       )
     );
 
@@ -53,7 +53,7 @@ exports.createPostA = async (req, res) => {
       postType: "Ordinary",
       interactionCount: 0,
       rewardPerInteraction: post.rewardPerInteraction,
-      maximumInteraction: post.maximumInteraction,
+      maximumInteraction: post.maxInteraction,
       postHash: posthash,
       socialTask: post.socialTasks,
     });
