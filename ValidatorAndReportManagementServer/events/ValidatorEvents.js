@@ -1,3 +1,4 @@
+const { ethers } = require("ethers");
 const contract  = require("../models/contractValidator")
 const {userModel,validatorModel}  = require("../models/dbModel");
 const {nanoid} = require("nanoid")
@@ -18,6 +19,7 @@ exports.ListenValidatorEvents = () => {
          onChainCreditScore:10,
          lastCheckIn:Number(timestamp),
          address:address,
+         stake:0.1,
       })
 
       user.isValidator = true;
@@ -67,7 +69,7 @@ exports.ListenValidatorEvents = () => {
           address = address.toLowerCase();
           const validator  = await validatorModel.findOne({address:address}).exec()
           validator.lastCheckIn = Number(timestamp);
-          validator.stake = stake;
+          validator.stake = stake/10**18;
           await validator.save();
       }catch(error){ 
           console.log("Error Occured At SLASH Event  Error Message :"+ error.message);

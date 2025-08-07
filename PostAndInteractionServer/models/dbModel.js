@@ -59,6 +59,7 @@ const ChallengeSchema = postModel.discriminator(
         claimUnlock: Number,
         hasClaimed: Boolean,
         isValid: Boolean,
+        promoterUsername:String,
       },
     ],
   })

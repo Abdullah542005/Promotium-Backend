@@ -36,9 +36,13 @@ exports.generalFeed = async (req, res) => {
           rewardPerInteraction: 1,
           maximumInteraction: 1,
           interactionCount: 1,
+          stakeRequired:1,
+          challengeWindow:1,
+          socialTask:1,
           "advertiser.fullName": 1,
           "advertiser.username": 1,
           "advertiser.pfp": 1,
+          "advertiser.address":1
         },
       },
     ]);

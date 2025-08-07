@@ -87,7 +87,21 @@ exports.interactPostA = async (req, res) => {
             type: "interaction",
             postID: post._id,
             interactionID: interactionId,
-            message: `You have successfully interacted with the post ${post.title}.`,
+            message: `You have successfully interacted with the post ${post._id}.`,
+          },
+        },
+      }
+    );
+
+     await userModel.updateOne(
+      { _id: post.advertiserID },
+      {
+        $push: {
+          notifications: {
+            type: "interaction",
+            postID: post._id,
+            interactionID: interactionId,
+            message: `${user.username} have interacted with your post ${post._id}.`,
           },
         },
       }

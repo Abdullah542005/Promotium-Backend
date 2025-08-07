@@ -8,7 +8,10 @@ const {generalFeed} =  require("../controllers/gFeed")
 const {getContract}  = require("../controllers/getContracts");
 const {getValidator} = require("../controllers/getValidator");
 const {getUserNotifications} = require("../controllers/getUserNotifications");
+const {getReport} = require("../controllers/getReport")
 
+
+router.get("/report/:reportId",getReport);
 router.get("/feed/:timestamp", generalFeed);
 
 router.get("/post/:id", getPostController.getPost);
@@ -21,6 +24,6 @@ router.post('/search', search)
 
 router.post('/validator', getValidator);
 
-router.get('/notifications', getUserNotifications);
+router.get('/notifications/:id', getUserNotifications);
 
 module.exports = router;

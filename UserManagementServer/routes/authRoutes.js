@@ -28,6 +28,6 @@ router.post("/checkSocialMedia", checkSocialMedia);
 
 router.post("/createAccount", authorization, createAccount);
 
-router.delete("/clearNotifications/:username", clearNotifications);
+router.post("/clearNotifications/:address",authorization, clearNotifications);
 
 module.exports = router;

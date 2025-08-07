@@ -142,6 +142,7 @@ const ChallengeSchema = postModel.discriminator(
         interactionID: String,
         interactedAt: Number,
         promoterID: String,
+        promoterUsername:String,
         interactionBody: String,
         interactionHash: String,
         imageProofs: [String],

@@ -2,12 +2,12 @@
 const userModel = require("../model/dbModel")
 
 exports.clearNotifications = async (req, res) => {
-  const { username } = req.params;
-    if (!username) {
+  const  address  = req.params.address;
+    if (!address) {
       return res.status(400).json({ message: "Username is required" });
     }
     try {
-      const user = await userModel.findById(username);
+      const user = await userModel.findOne({address:address.toLowerCase()});
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }

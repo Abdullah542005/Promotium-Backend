@@ -52,8 +52,7 @@ exports.interactPostB = async (req, res) => {
     //Must to be calculated in the same order as this one for the frontend too
     const hash = ethers.sha256(
       toUtf8Bytes(
-        interactionObject.interactionBody +
-          interactionObject.imageProofs.join("")
+        interactionObject.interactionBody
       )
     );
 
@@ -69,6 +68,7 @@ exports.interactPostB = async (req, res) => {
       claimUnlock: interactionObject.timestamp + post.challengeWindow,
       hasClaimed: false,
       isValid: true,
+      promoterUsername:user.username
     });
     await post.save();
     user.interactions.push({
@@ -76,7 +76,38 @@ exports.interactPostB = async (req, res) => {
       interactionID: interactionId,
     });
     await user.save();
+
+    
+  await userModel.updateOne(
+      { _id: user._id },
+      {
+        $push: {
+          notifications: {
+            type: "interaction",
+            postID: post._id,
+            interactionID: interactionId,
+            message: `You have successfully interacted with the post ${post._id}.`,
+          },
+        },
+      }
+    );
+
+     await userModel.updateOne(
+      { _id: post.advertiserID },
+      {
+        $push: {
+          notifications: {
+            type: "interaction",
+            postID: post._id,
+            interactionID: interactionId,
+            message: `${user.username} have interacted with your post ${post._id}.`,
+          },
+        },
+      }
+    );
+
     return res.json({message:"Success"})
+    
   } catch (error) {
     console.log("Error Occured At Interact Post B");
     console.log("Error Message: " + error.message);
