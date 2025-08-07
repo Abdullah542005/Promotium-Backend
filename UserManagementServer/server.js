@@ -47,9 +47,14 @@ passport.use(new TwitterStrategy({
 
 app.use("/api/auth", authRoutes);
 
-   //Initial Route for Twitter
-app.get("/api/auth/twitter", passport.authenticate("twitter"));
-   //Call back Route
+   
+app.get("/api/auth/twitter", (req, res, next) => {
+  req.logout(() => {
+    next();
+  });
+}, passport.authenticate("twitter"));
+
+ 
 app.get("/api/auth/twitter/callback",
   passport.authenticate("twitter", { failureRedirect: "/login-failure" }),
   (req, res) => {
