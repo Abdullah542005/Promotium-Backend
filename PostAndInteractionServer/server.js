@@ -10,7 +10,7 @@ mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "promotium" })
 
 const server = express();
 
-app.use(cors({
+server.use(cors({
   origin: true,          
   credentials: true     
 }));
