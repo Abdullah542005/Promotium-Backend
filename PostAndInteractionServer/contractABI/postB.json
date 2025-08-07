@@ -2,153 +2,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_promo",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "OwnableInvalidOwner",
-		"type": "error"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "OwnableUnauthorizedAccount",
-		"type": "error"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "advertisor",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "postID",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			}
-		],
-		"name": "POSTCREATED",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "advertisor",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "postID",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			}
-		],
-		"name": "POSTDELETED",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "promoter",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "postID",
-				"type": "uint256"
-			}
-		],
-		"name": "POSTINTERACTION",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "PLATFORM_FEE",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "accumulatedFee",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "uint256",
 				"name": "_postId",
 				"type": "uint256"
@@ -344,113 +197,123 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
 				"internalType": "address",
-				"name": "",
+				"name": "_promo",
 				"type": "address"
 			}
 		],
-		"name": "interactions",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "hasClaimed",
-				"type": "bool"
-			},
-			{
-				"internalType": "bool",
-				"name": "isChallenged",
-				"type": "bool"
-			},
-			{
-				"internalType": "bool",
-				"name": "isValid",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
 			}
 		],
-		"name": "posts",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			},
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "address",
-				"name": "advertiser",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
 				"type": "address"
 			},
 			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "advertisor",
+				"type": "address"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "rewardPerInteraction",
+				"name": "postID",
 				"type": "uint256"
 			},
 			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "POSTCREATED",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "advertisor",
+				"type": "address"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "maxInteraction",
+				"name": "postID",
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
-				"name": "interactionCount",
-				"type": "uint256"
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "POSTDELETED",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "promoter",
+				"type": "address"
 			},
 			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "challengeWindow",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "stakeRequired",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "deleteInitiatedTime",
+				"name": "postID",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "POSTINTERACTION",
+		"type": "event"
 	},
 	{
 		"inputs": [],
@@ -512,6 +375,182 @@
 		"name": "transferOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "accumulatedFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "interactions",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "hasClaimed",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "isChallenged",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "isValid",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PLATFORM_FEE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "posts",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "advertiser",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "rewardPerInteraction",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxInteraction",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "interactionCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "challengeWindow",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "stakeRequired",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deleteInitiatedTime",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "reports",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "inValidCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalValidators",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

@@ -1,5 +1,5 @@
 const express  =  require("express");
-const { route } = require("./routes/routes");
+const route  = require("./routes/routes");
 const {ListenValidatorEvents}  = require("./events/ValidatorEvents")
 const {finalizeReports}   = require("./autonomous/finalizeReports")
 const app = express();

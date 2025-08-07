@@ -26,7 +26,7 @@ exports.createReport = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "Your Account Doesnot Exits" });
     if (!post) return res.status(400).json({ message: "Invalid Post ID" });
-    if (post.advertiserId != user._id)
+    if (post.advertiserID != user._id)
       return res
         .status(400)
         .json({ message: "You are not the owner of this post" });
@@ -149,7 +149,7 @@ exports.createReport = async (req, res) => {
 
   } catch (error) {
     console.log("Error at Create Report, Message :" + error.message);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    res.status(500).json({ message: "Internal Server Error"});
   }
 };
 
