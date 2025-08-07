@@ -42,7 +42,7 @@ exports.castVote = async (req, res) => {
       return res.status(400).json({ message: "Voting Period Ended" });
     }
 
-    const validator = await validatorModel.findOne({ address: userAddress }).exec();
+    const validator = await validatorModel.findOne({ address: userAddress.toLowerCase() }).exec();
     if (
       !validator.assignedReport.find((report) => report.reportId == reportId)
     ) {

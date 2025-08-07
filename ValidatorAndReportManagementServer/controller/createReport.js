@@ -19,10 +19,10 @@ require("dotenv").config();
 
 exports.createReport = async (req, res) => {
   try {
-    const { postId, userAddress, promoterId, advertiserComment } = req.body;
-    const user = await userModel.findOne({ address: userAddress }).exec();
+    const { postId, userAddress, promoterAddress, advertiserComment } = req.body;
+    const user = await userModel.findOne({ address: userAddress.toLowerCase() }).exec();
     const post = await postModel.findById({ _id: postId }).exec();
-    const promoterUser = await userModel.findById({ _id: promoterId }).exec();
+    const promoterUser = await userModel.find({ address:promoterAddress.toLowerCase() }).exec();
     if (!user)
       return res.status(400).json({ message: "Your Account Doesnot Exits" });
     if (!post) return res.status(400).json({ message: "Invalid Post ID" });
@@ -62,7 +62,7 @@ exports.createReport = async (req, res) => {
       advertiserId: user._id,
       advertiserComment: advertiserComment,
       hash: ethers.sha256(ethers.toUtf8Bytes(advertiserComment)), //Hashing Advertisor Comment
-      promoterId: promoterId,
+      promoterId: promoterUser._id,
       promoterAddress:promoterUser.address,
       postId: post._id,
       interactionId: interaction.interactionId,

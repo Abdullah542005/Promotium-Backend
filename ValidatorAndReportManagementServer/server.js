@@ -5,10 +5,10 @@ const {finalizeReports}   = require("./autonomous/finalizeReports")
 const app = express();
 
 app.use(express.json())
-app.use(route);
+app.use("/api",route);
 
 ListenValidatorEvents();  //Start Listing to Validator Contract events
-app.listen(4000); 
+app.listen(process.env.PORT || 4005); 
 
 finalizeReports();  // Calls finazalize Report Once when the Server Starts, then its called every hour delay
 setInterval(()=>{   

@@ -6,7 +6,7 @@ const passport = require("passport");
 const session = require("express-session");
 const TwitterStrategy = require("passport-twitter").Strategy;
 const authRoutes = require("./routes/authRoutes");
-
+const MongoStore = require("connect-mongo");
 dotenv.config();
 
 const app = express();
@@ -18,12 +18,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+
 app.use(session({
-  secret: process.env.SESSION_SECRET,  
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie:{secure:false}
+  store: MongoStore.create({ mongoUrl: process.env.DB_CONNECTIONSTRING }),
+  cookie: { secure: true } 
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
