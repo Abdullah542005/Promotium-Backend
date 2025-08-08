@@ -19,5 +19,5 @@ app.listen(process.env.PORT || 4005);
 finalizeReports();  // Calls finazalize Report Once when the Server Starts, then its called every hour delay
 setInterval(()=>{   
    finalizeReports();
-},60 * 60 * 1000)
+},10 * 60 * 1000)
 

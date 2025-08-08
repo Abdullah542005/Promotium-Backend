@@ -25,7 +25,7 @@ exports.finalizeReports = async () => {
 
   for (const report of uncheckedReports) {
     try {
-      await PostContract.finalizeReport(report.postId, report.promoterAddress);
+      await PostContract.finalizeReport(Number(report.postId.split("_")[1]), report.promoterAddress);
     } catch (error) {
       console.log(
         "An Error Occured while exectuing contract's finalize report function,Message: " +
