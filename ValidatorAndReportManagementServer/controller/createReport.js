@@ -4,7 +4,6 @@ const {
   reportModel,
   validatorModel,
 } = require("../models/dbModel");
-const ValidatorContract = require("../models/contractValidator");
 const ethers = require("ethers");
 const PostContract = require("../models/contractPostB");
 const { generateid } = require("../utils/generateid");
@@ -22,7 +21,7 @@ exports.createReport = async (req, res) => {
     const { postId, userAddress, promoterAddress, advertiserComment } = req.body;
     const user = await userModel.findOne({ address: userAddress.toLowerCase() }).exec();
     const post = await postModel.findById({ _id: postId }).exec();
-    const promoterUser = await userModel.find({ address:promoterAddress.toLowerCase() }).exec();
+    const promoterUser = await userModel.findOne({ address:promoterAddress.toLowerCase() }).exec();
     if (!user)
       return res.status(400).json({ message: "Your Account Doesnot Exits" });
     if (!post) return res.status(400).json({ message: "Invalid Post ID" });
@@ -35,13 +34,13 @@ exports.createReport = async (req, res) => {
        Number(postId.split("_")[1]),
        promoterUser.address
     );
-
+    
     if (reportMetadata.timestamp == 0)
       return res.status(400).json({
         message: "Precondition of storing metadata in the contract fails",
       });
 
-    const doesReportExits = await reportModel.findOne({ promoterId: promoterId });
+    const doesReportExits = await reportModel.findOne({ promoterId: promoterUser._id });
 
     if (doesReportExits)
       return res.status(400).json({
@@ -50,7 +49,7 @@ exports.createReport = async (req, res) => {
       });
 
     const interaction = post.interactions.find(
-      (interaction) => interaction.promoterID == promoterId
+      (interaction) => interaction.promoterID == promoterUser._id
     );
     interaction.isChallenged = true;
     post.markModified("interactions");
@@ -66,7 +65,7 @@ exports.createReport = async (req, res) => {
       promoterAddress:promoterUser.address,
       postId: post._id,
       interactionId: interaction.interactionId,
-      createdOn: reportMetadata.timestamp,
+      createdOn:  Number(reportMetadata.timestamp),
       validVotes: 0,     //Interaction is Valid
       invalidVotes: 0,  //Interaction is Invalid
       isInteractionValid: true,
@@ -88,7 +87,7 @@ exports.createReport = async (req, res) => {
         !validator.hasRequestedResign &&
         validator.onChainCreditScore > 5 &&
         validator.offChainCreditScore > 5 &&
-        validator.stake > ethers.parseEther("5")
+        validator.stake >= 0.1
     );
 
     // Calculates Weight on basis on offchain + onchain credit Score.
@@ -113,25 +112,26 @@ exports.createReport = async (req, res) => {
     );
 
     const report = await reportModel.findById({_id:reportId})
-    await report.assignedValidators.push(...validatorAddress).save();
+    report.assignedValidators.push(...validatorAddress)
+    await report.save();
 
     // Assigning Validators to the report in the contract
-    await contract.assignValidators(
+    await PostContract.assignValidators(
       Number(postId.split("_")[1]),
-      promoterUser,
+      promoterUser.address,
       validatorAddress
     );
      
     //Sending Notifications Emails to Validators 
     selectedValidators.forEach(async (validator)=> {
-       validator.assignedReport.push({
+        validator.assignedReport.push({
         reportId:reportId,postId:postId,
-        timestamp: reportMetadata.timestamp,
+        timestamp:Number(reportMetadata.timestamp),
         promoterAddress:promoterUser.address,promoterId:promoterUser._id,
         intreactionId:interaction._id
        })
        await validator.save();
-       await  transporter.sendMail(mail(validator.email,reportId,promoterId,promoterUser.address,postId))
+       await  transporter.sendMail(mail(validator.email,reportId,promoterUser._id,promoterUser.address,postId))
     })
         
     //Dapp Notifications Added

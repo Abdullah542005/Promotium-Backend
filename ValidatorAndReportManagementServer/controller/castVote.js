@@ -27,7 +27,7 @@ exports.castVote = async (req, res) => {
       !postId ||
       !userAddress ||
       !validatorComment ||
-      isValid === undefined || // must check for boolean properly
+      isValid === undefined || 
       !hash
     ) {
       return res.status(400).json({ message: "Missing Params" });

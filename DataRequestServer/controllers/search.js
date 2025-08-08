@@ -10,7 +10,7 @@ exports.search = async (req,res)=>{
         const user = await userModel.findOne({username:value}).lean();
         if(!user)
            return res.json({message:"Not Found"});
-        return res.json({pfp:user.pfp,fullName:user.fullName});
+        return res.json({pfp:user.pfp,fullName:user.fullName,username:user.username});
        }break;
 
        case "reportId":{
