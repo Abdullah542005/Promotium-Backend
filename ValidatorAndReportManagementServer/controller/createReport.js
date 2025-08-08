@@ -10,7 +10,7 @@ const { generateid } = require("../utils/generateid");
 const Chance = require("chance");
 const contract = require("../models/contractValidator");
 const transporter = require("../services/emailTransporter")
-const mail = require("../models/reportAssignmentmail")
+const {mail} = require("../models/reportAssignmentmail")
 require("dotenv").config();
 
 /* Precondition :- the report metadata must be stored in the contract before calling this function
