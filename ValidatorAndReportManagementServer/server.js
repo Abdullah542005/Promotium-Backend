@@ -4,7 +4,9 @@ const {ListenValidatorEvents}  = require("./events/ValidatorEvents")
 const {finalizeReports}   = require("./autonomous/finalizeReports")
 const cors = require("cors")
 const app = express();
-
+require("dotenv").config()
+const mongoose = require('mongoose');
+mongoose.connect(process.env.DB_CONNECTIONSTRING, { dbName: "promotium" });
 app.use(cors({
   origin: true,          
   credentials: true     
