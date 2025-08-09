@@ -42,7 +42,7 @@ exports.createReport = async (req, res) => {
 
     const doesReportExits = await reportModel.findOne({ promoterId: promoterUser._id });
 
-    if (doesReportExits)
+    if (doesReportExits && doesReportExits.postId == post._id)
       return res.status(400).json({
         message:
           "Report against current promoter already exits in the database",

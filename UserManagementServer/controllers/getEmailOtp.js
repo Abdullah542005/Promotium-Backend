@@ -6,11 +6,11 @@ const otpList  = [];
 exports.getEmailOtp = async (req,res)=>{
     try{
     const {email, userAddress}  = req.body;
-    if(otpList.find((otpObject)=>otpObject.userAddress == userAddress)){
+    if(otpList.find((otpObject)=>otpObject.userAddress.toLowerCase() == userAddress.toLowerCase())){
         return res.status(400).json({message:"OTP already sent"})
     }
     let otp  = otpGenerator.generate(6,{specialChars:false,upperCaseAlphabets:false})
-    otpList.push({otp:otp,email:email,userAddress:userAddress, timestamp:Math.floor(Date.now()/1000)})
+    otpList.push({otp:otp,email:email,userAddress:userAddress.toLowerCase(), timestamp:Math.floor(Date.now()/1000)})
     const mailOptions  = {
         from:process.env.EMAIL,
         to:email,
