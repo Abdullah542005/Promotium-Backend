@@ -82,7 +82,14 @@ const userSchema  = new mongoose.Schema({
      follows:[String],
      posts:[String],
      interactions:[{postID:String, interactionID:String}],
-     isValidator:Boolean
+     isValidator:Boolean,
+     notifications: [
+  {
+    type: { type: String, required: true },  
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+  }
+]
 })
 
 
@@ -109,6 +116,7 @@ const postSchema = new mongoose.Schema(
   },
   { discriminatorKey:'postType', _id: false }
 );
+
 
 const postModel = mongoose.model("Post", postSchema);
 

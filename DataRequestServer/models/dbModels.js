@@ -84,12 +84,13 @@ const userSchema = new mongoose.Schema({
     isValidator: Boolean,
 
     // notifications
-    notifications: [
-        {
-            type: { type: String }, 
-            message: String         
-        }
-    ]
+   notifications: [
+  {
+    type: { type: String, required: true },  
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now } 
+  }
+]
 });
 
 

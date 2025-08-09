@@ -32,11 +32,12 @@ const userSchema = new mongoose.Schema({
   isValidator: Boolean,
   email: String,
   notifications: [
-    {
-      type: { type: String },
-      message: { type: String },
-    },
-  ],
+  {
+    type: { type: String, required: true },  
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now } 
+  }
+],
   isEmailLinked: Boolean,
 });
 
