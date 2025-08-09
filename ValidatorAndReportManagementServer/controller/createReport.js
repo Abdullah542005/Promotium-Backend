@@ -40,9 +40,9 @@ exports.createReport = async (req, res) => {
         message: "Precondition of storing metadata in the contract fails",
       });
 
-    const doesReportExits = await reportModel.findOne({ promoterId: promoterUser._id });
+    const doesReportExits = await reportModel.findOne({ promoterId: promoterUser._id, postId:post._id });
 
-    if (doesReportExits && doesReportExits.postId == post._id)
+    if (doesReportExits)
       return res.status(400).json({
         message:
           "Report against current promoter already exits in the database",
