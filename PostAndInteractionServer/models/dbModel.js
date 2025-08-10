@@ -95,12 +95,14 @@ const userSchema = new mongoose.Schema({
   posts: [String],
   interactions: [{ postID: String, interactionID: String }],
   isValidator: Boolean,
+ 
  notifications: [
   {
-    type: { type: String },
-    message: { type: String },
+    type: { type: String, required: true }, 
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now } 
   }
-],
+]
 
 });
 
