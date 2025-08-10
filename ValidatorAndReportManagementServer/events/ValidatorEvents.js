@@ -20,6 +20,7 @@ exports.ListenValidatorEvents = () => {
          lastCheckIn:Number(timestamp),
          address:address,
          stake:0.1,
+         hasRequestedResign:false
       })
 
       user.isValidator = true;
