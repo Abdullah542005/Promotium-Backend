@@ -64,17 +64,6 @@ exports.finalizeReports = async () => {
         await validator.save();
       }
     }
-
-  
-    // Reward validators who voted
-    for (const vote of report.validatorsVote) {
-      try {
-        await promo.transfer(vote.validatorAddress, ethers.parseUnits(10)); 
-      } catch (err) {
-        console.error(
-          `Failed to reward validator ${vote.validatorAddress}: ${err.message}`
-        );
-      }
-    }
+    
   }
 };

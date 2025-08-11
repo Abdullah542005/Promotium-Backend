@@ -6,6 +6,8 @@ const {
 } = require("../models/dbModel");
 const contract = require("../models/contractValidator");
 const PostContract = require("../models/contractPostB");
+const promo = require("../models/promo");
+const { ethers } = require("ethers");
 
 // Precondition: call only after casting vote with the smart contract
 exports.castVote = async (req, res) => {
@@ -104,9 +106,13 @@ exports.castVote = async (req, res) => {
       }
     );
 
+    //Send Reward to Validator
 
+    const tx  = await promo.transfer(userAddress,ethers.parseUnits("10"))
+    await tx.wait();
+    
     res.status(200).json({
-      message: "Your vote is counted, your reward will be sent to your address once finalized",
+      message: "Your vote is counted, your reward will be sent to your address",
     });
   } catch (error) {
     console.log("An Error Occurred at Casting Vote," + error.message);
