@@ -1,85 +1,63 @@
+// XAuthInterface.js
 const axios = require("axios");
-const crypto = require("crypto");
-const { userModel } = require("../models/dbModel");
+const querystring = require("querystring");
 
-const CLIENT_ID = process.env.TWITTER_CLIENT_ID;
-const REDIRECT_URI = process.env.TWITTER_REDIRECT_URI;
-const codeVerifiers = new Map();
+const clientId = process.env.TWITTER_CLIENT_ID;
+const clientSecret = process.env.TWITTER_CLIENT_SECRET;
+const redirectUri = process.env.TWITTER_REDIRECT_URI;
 
-exports.XAuthInterface = async (req, res) => {
-  const { step } = req.query;
+async function startAuth(req, res) {
+  try {
+    const authUrl = `https://twitter.com/i/oauth2/authorize?${querystring.stringify({
+      response_type: "code",
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: "tweet.read users.read follows.read follows.write like.read like.write offline.access",
+      state: "state123",
+      code_challenge: "challenge",
+      code_challenge_method: "plain"
+    })}`;
 
-  if (step === "initiate") {
-    const codeVerifier = crypto.randomBytes(32).toString("hex");
-    const state = crypto.randomBytes(16).toString("hex");
-
-    codeVerifiers.set(state, codeVerifier);
-
-    const authUrl = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-      REDIRECT_URI
-    )}&scope=${encodeURIComponent(
-      "tweet.read users.read offline.access"
-    )}&state=${state}&code_challenge=${codeVerifier}&code_challenge_method=plain`;
-
-    return res.json({ url: authUrl });
+    res.redirect(authUrl);
+  } catch (err) {
+    console.error("Error starting Twitter auth:", err.message);
+    res.status(500).json({ error: "Failed to start Twitter auth" });
   }
+}
 
-  if (step === "callback") {
-    const { code, state } = req.query;
+async function handleCallback(req, res) {
+  try {
+    const { code } = req.query;
 
-    if (!code || !state || !codeVerifiers.has(state)) {
-      return res.status(400).json({ error: "Invalid state or code" });
-    }
+    const tokenResponse = await axios.post(
+      "https://api.twitter.com/2/oauth2/token",
+      querystring.stringify({
+        code,
+        grant_type: "authorization_code",
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        code_verifier: "challenge"
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization:
+            "Basic " +
+            Buffer.from(`${clientId}:${clientSecret}`).toString("base64")
+        }
+      }
+    );
 
-    const codeVerifier = codeVerifiers.get(state);
-    codeVerifiers.delete(state);
+    const accessToken = tokenResponse.data.access_token;
 
-    try {
-      // Exchange code for tokens
-      const tokenResponse = await axios.post(
-        "https://api.twitter.com/2/oauth2/token",
-        new URLSearchParams({
-          grant_type: "authorization_code",
-          code,
-          redirect_uri: REDIRECT_URI,
-          client_id: CLIENT_ID,
-          code_verifier: codeVerifier,
-        }),
-        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
-      );
-
-      const { access_token, refresh_token } = tokenResponse.data;
-
-      // Fetch user info
-      const userInfo = await axios.get("https://api.twitter.com/2/users/me", {
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
-
-      const { id, username } = userInfo.data.data;
-
-      await userModel.updateOne(
-        { "X.userId": id },
-        {
-          $set: {
-            "X.userId": id,
-            "X.username": username,
-            "X.token": access_token,
-            "X.refreshToken": refresh_token,
-          },
-        },
-        { upsert: true }
-      );
-
-      return res.json({
-        success: true,
-        message: "Twitter login successful",
-        user: { id, username },
-      });
-    } catch (err) {
-      console.error("Twitter OAuth error:", err.response?.data || err.message);
-      return res.status(500).json({ error: "Twitter OAuth failed" });
-    }
+    res.json({ success: true, accessToken });
+  } catch (err) {
+    console.error("Error in Twitter callback:", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to complete Twitter auth" });
   }
+}
 
-  return res.status(400).json({ error: "Invalid step parameter" });
+module.exports = {
+  startAuth,
+  handleCallback
 };
