@@ -19,6 +19,6 @@ server.use(express.json());
 
 server.use('/api', routes);
 
-server.listen(4001, () => {
+server.listen(4000, () => {
     console.log("Server listening on port 4000");
 });
