@@ -147,6 +147,20 @@ exports.createReport = async (req, res) => {
       }
     );
 
+      await userModel.updateOne(
+      { address: promoterAddress },
+      {
+        $push: {
+          notifications: {
+            type: "Interaction Reported",
+            message: `Your interaction with post ${postId} has been reported by advertiser ${user.username}
+             Report Id #${reportId}`,
+          },
+        },
+      }
+    );
+
+
   } catch (error) {
     console.log("Error at Create Report, Message :" + error.message);
     res.status(500).json({ message: "Internal Server Error"});

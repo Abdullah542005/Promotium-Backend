@@ -42,10 +42,69 @@ exports.finalizeReports = async () => {
       report.isInteractionValid = true;
       interaction.isChallenged = false;
       interaction.claimUnlock = Date.now() / 1000; //Unlocks the claim
+      // Push notification to advertiser and promoter
+      await userModel.updateOne(
+            { address: report.promoterAddress.toLocaleLowerCase()},
+            {
+              $push: {
+                notifications: {
+                  type: "Report Finalized",
+                  message: `After validators inspection your interaction with Post Id #${report.postId}
+                  has been deeemed valid, hence you can claim your reward immediately from your My Interaction
+                  tab of your profile.
+                  `,
+                },
+              },
+            }
+          );
+
+            await userModel.updateOne(
+            { _id:report.advertiserId},
+            {
+              $push: {
+                notifications: {
+                  type: "Report Finalized",
+                  message: `After validators inspection your report of Post Id #${report.postId}
+                  against ${report.promoterId} has been deeemed as inValid, you can search the report Id# ${report.id}
+                  for validators stance.`,
+                },
+              },
+            }
+          )
+
     } else {
       post.interactionCount--;
-      interaction.isValid = false; // The interaction is set to invalid, though it is deleted from the blockchain.
+      interaction.isValid = false; 
+      await userModel.updateOne(
+      { address: report.promoterAddress.toLowerCase() },
+      {
+        $push: {
+          notifications: {
+            type: "Report Finalized",
+            message: `After validators inspection your interaction with Post Id #${report.postId}
+            has been deeemed inValid, hence your stake for post is slashed and your interaction is removed.
+            Please strickly follow advertisers requirements, before interacting.`,
+          },
+        },
+      }
+    );
+
+     await userModel.updateOne(
+            { _id:report.advertiserId},
+            {
+              $push: {
+                notifications: {
+                  type: "Report Finalized",
+                  message: `After validators inspection your report of Post Id #${report.postId}
+                  against ${report.promoterId} has been deeemed as Valid, you can search the report Id #${report.id}
+                  for validators stance.`,
+                },
+              },
+            }
+          )
+
     }
+
     post.markModified("interactions");
     await post.save();
     await report.save();
@@ -64,6 +123,7 @@ exports.finalizeReports = async () => {
         await validator.save();
       }
     }
-    
   }
+
+
 };
