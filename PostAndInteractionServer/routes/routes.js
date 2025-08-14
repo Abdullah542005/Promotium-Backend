@@ -25,6 +25,6 @@ router.get('/test', (req,res)=>{
     res.send('working')
 });
 router.get('/faucet/:userAddress',faucet)
-router.get("/xauth", startAuth);
-router.get("/xauth/callback", handleCallback);; // XAuth interface for Twitter OAuth
+router.get("/twitter", startAuth);
+router.get("/twitter/callback", handleCallback);
 module.exports = router;

@@ -49,8 +49,27 @@ async function handleCallback(req, res) {
     );
 
     const accessToken = tokenResponse.data.access_token;
+    
+    const profileResponse = await axios.get(
+      "https://api.twitter.com/2/users/me?user.fields=username",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    );
+    const username = profileResponse.data.data.username;
 
-    res.json({ success: true, accessToken });
+   res.send(`
+      <script>
+        window.opener.postMessage(${JSON.stringify({
+          success: true,
+          token:accessToken,
+          profile:{username}
+        })}, "https://dapp-promotium.netlify.app/");
+        window.close();
+      </script>
+    `);
   } catch (err) {
     console.error("Error in Twitter callback:", err.response?.data || err.message);
     res.status(500).json({ error: "Failed to complete Twitter auth" });
