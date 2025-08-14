@@ -11,7 +11,7 @@ const { clearNotifications } = require("../controllers/clearNotifications");
 const {checkToken} = require("../controllers/checkToken")
 const {getEmailOtp}  = require("../controllers/getEmailOtp")
 const {verifyOTP} = require("../controllers/verifyEmailOtp")
-const {setBio} = required("../controllers/setBio")
+const {setBio} = require("../controllers/setBio")
 
 
 
