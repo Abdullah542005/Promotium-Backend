@@ -24,7 +24,7 @@ router.post("/login", login);
 router.get("/checkUserName/:userName", checkUserName);
 
 router.post("/checkSocialMedia", checkSocialMedia);
-router.post("/setbio", setBio);
+router.post("/setBio", setBio)
 
 router.post("/createAccount", authorization, createAccount);
 
