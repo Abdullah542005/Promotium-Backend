@@ -66,7 +66,7 @@ async function handleCallback(req, res) {
           success: true,
           token:accessToken,
           profile:{username}
-        })}, "https://dapp-promotium.netlify.app/");
+        })}, "https://dapp-promotium.netlify.app");
         window.close();
       </script>
     `);
