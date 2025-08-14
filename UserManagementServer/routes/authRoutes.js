@@ -11,6 +11,7 @@ const { clearNotifications } = require("../controllers/clearNotifications");
 const {checkToken} = require("../controllers/checkToken")
 const {getEmailOtp}  = require("../controllers/getEmailOtp")
 const {verifyOTP} = require("../controllers/verifyEmailOtp")
+const {setBio} = required("../controllers/setBio")
 
 
 
@@ -23,6 +24,7 @@ router.post("/login", login);
 router.get("/checkUserName/:userName", checkUserName);
 
 router.post("/checkSocialMedia", checkSocialMedia);
+router.post("/setbio", setBio);
 
 router.post("/createAccount", authorization, createAccount);
 
